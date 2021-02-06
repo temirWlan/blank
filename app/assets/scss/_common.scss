@@ -1,0 +1,37 @@
+.container {
+	max-width: 1378px;
+	margin: 0 auto;
+}
+
+.row {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.column {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.section-title {
+	@include inter-regular;
+	@include font-props(32px, 150%, $dark);
+}
+
+.section-subtitle {
+	@include inter-regular;
+	@include font-props(20px, 160%, $darkGray);
+}
+
+.desc-title {
+	@include inter-regular;
+	@include font-props(18px, 133%, $fff);
+}
+
+.desc-text {
+	@include inter-regular;
+	@include font-props(16px, 150%, $darkGray);
+}
+
