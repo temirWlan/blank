@@ -45,6 +45,26 @@
 	}
 }
 
+/* grid */
+@mixin grid($columns, $colgap, $rowgap, $rows: false) {
+	display: grid;
+	grid-template-columns: $columns;
+	grid-gap: $colgap $rowgap;
+	@if $rows {
+		grid-template-rows: $rows;
+	}
+}
+
+/* background */
+@mixin background($image: false, $repeat: no-repeat, $position: center, $size: cover) {
+	@if $image {
+		background-image: url($image);
+	}
+	background-repeat: $repeat; 
+	background-position: $position;
+	background-size: $size;
+}
+
 /* pseudo */
 @mixin pseudo($display: inline-block, $content: '') {
 	content: $content;
