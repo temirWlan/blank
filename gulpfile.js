@@ -16,21 +16,24 @@ const dest = "./build";
 const path = {
 	src: {
 		html: `${src}/index.html`,
-		img: `${src}/assets/img/**/*.*`,
+		images: `${src}/assets/images/**/*.*`,
+		icons: `${src}/assets/icons/**/*.*`,
 		fonts: `${src}/assets/fonts/**/*.*`,
 		styles: `${src}/assets/scss/style.scss`,
 		js: `${src}/assets/js/main.js`
 	},
 	build: {
 		html: `${dest}`,
-		img: `${dest}/assets/img`,
+		images: `${dest}/assets/images`,
+		icons: `${dest}/assets/icons`,
 		fonts: `${dest}/assets/fonts`,
 		css: `${dest}/assets/css`,
 		js: `${dest}/assets/js`
 	},
 	watch: {
 		html: `${src}/index.html`,
-		img: `${src}/assets/img/**/*.*`,
+		images: `${src}/assets/images/**/*.*`,
+		icons: `${src}/assets/icons/**/*.*`,
 		fonts: `${src}/assets/fonts/**/*.*`,
 		styles: `${src}/assets/scss/**/*.scss`,
 		js: `${src}/assets/js/**/*.js`
@@ -49,15 +52,27 @@ function copyHtml() {
                .pipe(browsersync.stream());
 }
 
-function copyImg() {
-	return gulp.src(path.src.img)
+function copyImages() {
+	return gulp.src(path.src.images)
                .pipe(imagemin({
                   progressive: true, 
                   svgoPlugins: [{ removeViewBox: false }],
                   interlaced: true,
                   optimazationLevel: 3
                }))
-               .pipe(gulp.dest(path.build.img))
+               .pipe(gulp.dest(path.build.images))
+               .on("end", browsersync.reload);
+}
+
+function copyIcons() {
+	return gulp.src(path.src.icons)
+               .pipe(imagemin({
+                  progressive: true, 
+                  svgoPlugins: [{ removeViewBox: false }],
+                  interlaced: true,
+                  optimazationLevel: 3
+               }))
+               .pipe(gulp.dest(path.build.icons))
                .on("end", browsersync.reload);
 }
 
@@ -154,7 +169,8 @@ function watch() {
    });
 
    gulp.watch(path.watch.html, copyHtml);
-   gulp.watch(path.watch.img, copyImg);
+   gulp.watch(path.watch.images, copyImages);
+   gulp.watch(path.watch.icons, copyIcons);
    gulp.watch(path.watch.fonts, copyFonts);
    gulp.watch(path.watch.styles, buildStyles);  
    gulp.watch(path.watch.js, buildJs);
@@ -162,7 +178,7 @@ function watch() {
 
 
 function build(done) {
-	gulp.series(clean, gulp.parallel(copyHtml, copyImg, copyFonts, buildStyles, buildJs))(done);
+	gulp.series(clean, gulp.parallel(copyHtml, copyImages, copyIcons, copyFonts, buildStyles, buildJs))(done);
 }
 
 gulp.task("default", gulp.parallel(watch, build));
@@ -170,7 +186,8 @@ gulp.task("default", gulp.parallel(watch, build));
 exports = {
 	clean,
 	copyHtml,
-	copyImg,
+	copyImages,
+	copyIcons,
 	copyFonts,
 	buildStyles,
 	buildJs,
