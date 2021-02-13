@@ -10,6 +10,7 @@ const cleanCSS = require("gulp-clean-css");
 const sourcemaps   = require("gulp-sourcemaps");
 const imagemin = require("gulp-imagemin");
 const del          = require("del");
+const config = require('./webpack.config');
 
 const src = "./app"
 const dest = "./build";
@@ -100,65 +101,10 @@ function buildStyles() {
 
 function buildJs() {
 	return gulp.src(path.src.js)
-               .pipe(webpack({
-                  mode: "development",
-                  output: {
-                     filename: "script.js"
-                  },
-                  watch: false,
-                  devtool: "source-map",
-                  module: {
-                     rules: [
-                        {
-                        	test: /\.m?js$/,
-                           exclude: /(node_modules|bower_components)/,
-                           use: {
-                              loader: "babel-loader",
-                              options: {
-                                	presets: [["@babel/preset-env", {
-                                    debug: true,
-                                    corejs: 3,
-                                    useBuiltIns: "usage"
-                                }]]
-                              }
-                           }
-                        }
-                    	]
-                  }
-               }))
+               .pipe(webpack(config))
                .pipe(gulp.dest(path.build.js))
                .on("end", browsersync.reload);
 }
-
-
-function buildProdJs() {
-	return gulp.src(path.src.js)
-					.pipe(webpack({
-					  	mode: "production",
-					  	output: {
-					      filename: "script.js"
-					  	},
-					  	module: {
-					      rules: [
-					        	{
-					         	test: /\.m?js$/,
-					         	exclude: /(node_modules|bower_components)/,
-					         	use: {
-					            	loader: "babel-loader",
-					            	options: {
-					              		presets: [["@babel/preset-env", {
-					                  	corejs: 3,
-					                  	useBuiltIns: "usage"
-					              		}]]
-					            	}
-					          	}
-					        	}
-					      ]
-					   }
-					}))
-					.pipe(gulp.dest(path.build.js));
-}
-
 
 // service tasks
 function watch() {

@@ -32,5 +32,8 @@
     "gulp-sourcemaps": "^2.6.5",
     "webpack": "^4.43.0",
     "webpack-stream": "^5.2.1"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0"
   }
 }
